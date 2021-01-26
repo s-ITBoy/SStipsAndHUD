@@ -16,12 +16,13 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "SStipsAndHUD"
-  spec.version      = "0.0.1"
+  spec.version      = "0.0.2"
   spec.summary      = "iOS SStipsAndHU."
   spec.homepage     = "https://github.com/s-ITBoy/SStipsAndHUD"
   spec.license = "MIT"
   spec.source       = { :git => "https://github.com/s-ITBoy/SStipsAndHUD.git", :tag => "#{spec.version}" }
   spec.source_files = "SStipsAndHUD", "SSshowHUDdemo/SStipsAndHUD/**/*.{h,m,bundle}"
+  spec.resources = "SSshowHUDdemo/SStipsAndHUD/SStipsAndHUD.bundle"
   spec.author = { "s-ITBoy" => "1209771961@qq.com" } 
   spec.platform = :ios, "9.0"
 
