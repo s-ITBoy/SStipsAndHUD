@@ -30,7 +30,7 @@
 }
 
 - (void)clickBtn {
-    [self SSshowLoadingHUD:10];
+    [self SSshowLoadingHUD:2];
     
 }
 

@@ -95,6 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)SSdismissLoadingSSHUD;
 
+- (void)SSdismissLoadingSSHUD:(void(^)(void))cancelBlock;
+
 - (void)SSdismissAllLoading;
 
 @end

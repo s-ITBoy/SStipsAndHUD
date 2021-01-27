@@ -24,6 +24,7 @@
 @property(nonatomic,strong) UIImageView* circleImgV;
 @property(nonatomic,strong) NSTimer* timer;
 
+@property(nonatomic,copy) void (^SScancelBlock) (void);
 @end
 
 @implementation SStipsAndHUD
@@ -57,6 +58,7 @@
         _loadingLab.text = @"加载中";
         
         UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+        [_loadingLab addGestureRecognizer:tap];
     }
     return _loadingLab;
 }
@@ -441,6 +443,7 @@
         [self.bgView addSubview:downView];
         downView.frame = CGRectMake(0, 0, cancel ? width-ssscale(20) : width, ssscale(20));
         downView.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 + ssscale(25));
+        downView.userInteractionEnabled = cancel;
         if (cancel) {
             downView.layer.borderWidth = 0.5;
             downView.layer.borderColor = self.loadingTextColor ? self.loadingTextColor.CGColor : [UIColor blackColor].CGColor;
@@ -474,6 +477,10 @@
     [self removeFromSuperview];
 }
 
+- (void)SSdismissLoadingSSHUD:(void (^)(void))cancelBlock {
+    _SScancelBlock = cancelBlock;
+}
+
 - (void)SSdismissAllLoading {
     for (UIView* view in [UIApplication sharedApplication].keyWindow.subviews) {
         if (view.tag == 10010101) {
@@ -499,9 +506,8 @@
     });
 }
 
-///取消按钮的方法
-- (void)clickCancelBtn {
-    
+- (void)tap {
+    [self SSdismissLoadingSSHUD];
 }
 
 ///画圆环图片

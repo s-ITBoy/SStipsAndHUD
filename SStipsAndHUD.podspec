@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "SStipsAndHUD"
-  spec.version      = "0.0.3"
+  spec.version      = "0.1.0"
   spec.summary      = "iOS SStipsAndHU."
   spec.homepage     = "https://github.com/s-ITBoy/SStipsAndHUD"
   spec.license = "MIT"
