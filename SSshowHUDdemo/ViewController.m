@@ -30,7 +30,7 @@
 }
 
 - (void)clickBtn {
-    [self SSshowLoadingHUD:SSloadingModelImgCircleAndText];
+    [self SSshowLoadingHUD:10];
     
 }
 

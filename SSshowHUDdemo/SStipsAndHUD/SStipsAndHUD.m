@@ -55,6 +55,8 @@
         _loadingLab.textAlignment = NSTextAlignmentCenter;
         _loadingLab.font = [UIFont systemFontOfSize:15];
         _loadingLab.text = @"加载中";
+        
+        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
     }
     return _loadingLab;
 }
@@ -71,6 +73,7 @@
     }
     return _circleImgV;
 }
+
 
 //FIXME:----------
 - (instancetype)init {
@@ -320,11 +323,7 @@
     
     switch (model) {
         case SSloadingModelActivityIndicator: {
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-            [self.bgView addSubview:self.indicatorView];
-            self.indicatorView.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
-            
+            [self setSubV:self.indicatorView];
             [self.indicatorView startAnimating];
         }
             break;
@@ -332,17 +331,15 @@
             CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
             width = MAX(ssscale(100), width);
             
-            self.bgView.frame = CGRectMake(0, 0, width, width);
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
+            [self setSubViews:self.indicatorView and:self.loadingLab width:width cancel:NO];
+            [self.indicatorView startAnimating];
+        }
+            break;
+        case SSloadingModelActivityIndicatorAndCancelBtn: {
+            CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
+            width = MAX(ssscale(100), width);
             
-            [self.bgView addSubview:self.indicatorView];
-            self.indicatorView.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 - ssscale(15));
-            
-            [self.bgView addSubview:self.loadingLab];
-            self.loadingLab.frame = CGRectMake(0, 0, width, ssscale(20));
-            self.loadingLab.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 + ssscale(25));
-            
+            [self setSubViews:self.indicatorView and:self.loadingLab width:width cancel:YES];
             [self.indicatorView startAnimating];
         }
             break;
@@ -351,24 +348,14 @@
             width = MAX(ssscale(80), width);
             
             self.bgView.frame = CGRectMake(0, 0, width, width);
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-            
-            [self.bgView addSubview:self.loadingLab];
             self.loadingLab.frame = CGRectMake(0, 0, width, width);
+            [self setSubV:self.loadingLab];
         }
             break;
         case SSloadingModelImgCircle: {
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-            
-            [self.bgView addSubview:self.circleImgV];
-            self.circleImgV.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
-            
+            [self setSubV:self.circleImgV];
             if (!self.timer) {
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
-//                [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-//                [[NSRunLoop currentRunLoop] run];
             }
         }
             break;
@@ -376,35 +363,27 @@
             CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
             width = MAX(ssscale(100), width);
             
-            self.bgView.frame = CGRectMake(0, 0, width, width);
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-            
-            [self.bgView addSubview:self.circleImgV];
-            self.circleImgV.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 - ssscale(15));
-            
-            [self.bgView addSubview:self.loadingLab];
-            self.loadingLab.frame = CGRectMake(0, 0, width, ssscale(20));
-            self.loadingLab.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 + ssscale(25));
-            
+            [self setSubViews:self.circleImgV and:self.loadingLab width:width cancel:NO];
             if (!self.timer) {
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
-//                [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-//                [[NSRunLoop currentRunLoop] run];
             }
         }
                 break;
-        case SSloadingModelPathCircle: {
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
+        case SSloadingModelImgCircleAndCancelBtn: {
+            CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
+            width = MAX(ssscale(100), width);
             
-            [self.bgView addSubview:self.circleImgV];
-            self.circleImgV.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
-            
+            [self setSubViews:self.circleImgV and:self.loadingLab width:width cancel:YES];
             if (!self.timer) {
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
-//                [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-//                [[NSRunLoop currentRunLoop] run];
+            }
+        }
+            break;
+        case SSloadingModelPathCircle: {
+            
+            [self setSubV:self.circleImgV];
+            if (!self.timer) {
+                self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
             }
         }
             break;
@@ -412,21 +391,19 @@
             CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
             width = MAX(ssscale(100), width);
             
-            self.bgView.frame = CGRectMake(0, 0, width, width);
-//            self.bgView.center = self.center;
-            self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-            
-            [self.bgView addSubview:self.circleImgV];
-            self.circleImgV.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 - ssscale(15));
-            
-            [self.bgView addSubview:self.loadingLab];
-            self.loadingLab.frame = CGRectMake(0, 0, width, ssscale(20));
-            self.loadingLab.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 + ssscale(25));
-            
+            [self setSubViews:self.circleImgV and:self.loadingLab width:width cancel:NO];
             if (!self.timer) {
                 self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
-                [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-//                [[NSRunLoop currentRunLoop] run];
+            }
+        }
+            break;
+        case SSloadingModelPathCircleAndCancelBtn: {
+            CGFloat width = [self.loadingLab.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.loadingLab.font,NSFontAttributeName, nil]].width + ssscale(20);
+            width = MAX(ssscale(100), width);
+            
+            [self setSubViews:self.circleImgV and:self.loadingLab width:width cancel:YES];
+            if (!self.timer) {
+                self.timer = [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(runCircle) userInfo:nil repeats:YES];;
             }
         }
             break;
@@ -434,10 +411,9 @@
             if (self.customView) {
                 CGRect frame = CGRectMake(0, 0, self.customView.frame.size.width, self.customView.frame.size.height);
                 self.bgView.frame = frame;
-//                self.bgView.center = self.center;
+                [self setSubV:self.customView];
+            }else {
                 self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
-                
-                [self.bgView addSubview:self.customView];
             }
         }
             break;
@@ -445,6 +421,35 @@
         default:
             break;
     }
+}
+
+- (void)setSubV:(UIView*)view {
+    self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
+    
+    [self.bgView addSubview:view];
+    view.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
+}
+
+- (void)setSubViews:(UIView*)upView and:(UIView*_Nullable)downView width:(CGFloat)width cancel:(BOOL)cancel {
+    self.bgView.frame = CGRectMake(0, 0, width, width);
+    self.bgView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2 + _offset_YY);
+    
+    [self.bgView addSubview:upView];
+    upView.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 - ssscale(15));
+    
+    if (downView != nil) {
+        [self.bgView addSubview:downView];
+        downView.frame = CGRectMake(0, 0, cancel ? width-ssscale(20) : width, ssscale(20));
+        downView.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2 + ssscale(25));
+        if (cancel) {
+            downView.layer.borderWidth = 0.5;
+            downView.layer.borderColor = self.loadingTextColor ? self.loadingTextColor.CGColor : [UIColor blackColor].CGColor;
+            downView.layer.cornerRadius = downView.frame.size.height / 2;
+            downView.layer.masksToBounds = YES;
+            
+        }
+    }
+    
 }
 
 - (void)SSshowLoadingSSHUD {
@@ -492,6 +497,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         self.circleImgV.transform = CGAffineTransformRotate(self.circleImgV.transform, 0.0006);
     });
+}
+
+///取消按钮的方法
+- (void)clickCancelBtn {
+    
 }
 
 ///画圆环图片

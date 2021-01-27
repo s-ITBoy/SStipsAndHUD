@@ -11,15 +11,24 @@
 typedef NS_ENUM(NSInteger, SSloadingModel) {
     ///系统菊花样式
     SSloadingModelActivityIndicator = 0,
+    ///
     SSloadingModelActivityIndicatorAndText,
+    ///
+    SSloadingModelActivityIndicatorAndCancelBtn,
     ///纯文字
     SSloadingModelText,
     ///图片圆环, 当为此模型时，可通过更改名为circle_loading的图片进行更改颜色等
     SSloadingModelImgCircle,
+    ///
     SSloadingModelImgCircleAndText,
+    ///
+    SSloadingModelImgCircleAndCancelBtn,
     ///根据path画出的圆环，可根据circleColor属性 设置圆环颜色
     SSloadingModelPathCircle,
+    ///
     SSloadingModelPathCircleAndText,
+    ///
+    SSloadingModelPathCircleAndCancelBtn,
     ///自定义
     SSloadingModelCustomize
 };
@@ -65,11 +74,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong) UIColor* bgColor;
 ///加载菊花的颜色样式。0：白色；非0：黑色（默认为：黑色）
 @property(nonatomic,assign) int indicatorColorType;
-///加载文本的内容，可不传。默认为：加载中
+///加载文本/cancelBtn的内容，可不传。label时默认为：加载中；cancelBtn默认为：cancel
 @property(nonatomic,strong) NSString* loadingText;
-///可不传。默认为系统15号字体
+///加载文本/cancelBtn的字体，可不传。默认为系统15号字体
 @property(nonatomic,strong) UIFont* loadingTextFont;
-///可不传。默认为系统黑色
+///加载文本/cancelBtn的颜色，可不传。默认为系统黑色
 @property(nonatomic,strong) UIColor* loadingTextColor;
 ///根据path画出的圆环 的颜色 默认黑色
 @property(nonatomic,strong) UIColor* circleColor;
