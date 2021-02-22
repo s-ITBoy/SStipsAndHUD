@@ -26,8 +26,10 @@ NSObject+HUD.h文件中 有公开的方法如下：
 
 ///msg：提示语
 - (void)SSshowMsg:(NSString*_Nullable)msg;
+
 ///msg：提示语；block：提示语结束后的回调
 - (void)SSshowMsg:(NSString*_Nullable)msg FinishBlock:(void (^)(void))block;
+
 ///msg：提示语；delay：延迟时间；block：提示语结束后的回调
 - (void)SSshowMsg:(NSString*_Nullable)msg delay:(CGFloat)delay FinishBlock:(void (^)(void))block;
 
