@@ -33,8 +33,7 @@ NSObject+HUD.h文件中 有公开的方法如下：
 
 #pragma mark --------- SSshowHUD -------------
 
-///此方法 默认显示菊花
-- (void)SSshowLoadingHUD;
+- (void)SSshowLoadingHUD;///此方法 默认显示菊花
 
 - (void)SSshowLoadingHUD:(SSloadingModel)model;
 
